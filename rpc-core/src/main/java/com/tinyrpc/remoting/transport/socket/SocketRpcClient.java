@@ -1,5 +1,6 @@
 package com.tinyrpc.remoting.transport.socket;
 
+import com.tinyrpc.registry.ServiceDiscovery;
 import com.tinyrpc.remoting.dto.RpcRequest;
 import com.tinyrpc.remoting.transport.RpcRequestTransport;
 
@@ -10,6 +11,11 @@ import com.tinyrpc.remoting.transport.RpcRequestTransport;
  * @date 2021/5/21
  */
 public class SocketRpcClient implements RpcRequestTransport {
+    private final ServiceDiscovery serviceDiscovery;
+
+    public SocketRpcClient() {
+        this.serviceDiscovery =
+    }
 
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {

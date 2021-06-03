@@ -1,6 +1,5 @@
 package com.tinyrpc.remoting.dto;
 
-import com.tinyrpc.entity.RpcServiceProperties;
 import lombok.*;
 
 import java.io.Serializable;
@@ -26,10 +25,8 @@ public class RpcRequest implements Serializable {
     private String version;
     private String group;
 
-    public RpcServiceProperties toRpcpropertiese() {
-        return RpcServiceProperties.builder().serviceName(this.getInterfaceName())
-                .version(this.getVersion())
-                .group(this.getGroup()).build();
+    public String getRpcServiceName() {
+        return this.getInterfaceName() + this.getGroup() + this.getVersion();
     }
 
 }

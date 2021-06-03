@@ -1,9 +1,7 @@
 package com.tinyrpc;
 
-import com.tinyrpc.entity.RpcServiceProperties;
 import com.tinyrpc.remoting.transport.RpcRequestTransport;
 import com.tinyrpc.remoting.transport.socket.SocketRpcClient;
-import com.tinyrpc.remoting.transport.socket.SocketRpcServer;
 
 /**
  * input description here

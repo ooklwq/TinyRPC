@@ -1,6 +1,6 @@
 package com.tinyrpc.provider;
 
-import com.tinyrpc.entity.RpcServiceProperties;
+import com.tinyrpc.config.RpcServiceConfig;
 
 /**
  * store and provide service object
@@ -12,29 +12,20 @@ public interface ServiceProvider {
 
     /**
      *
-     * @param service               service object
-     * @param serviceClass          the interface class implemented by the service instance object
-     * @param rpcServiceProperties  service related attributes
+     * @param rpcServiceConfig rpc service related attributes
      */
-    void addService(Object service, Class<?> serviceClass, RpcServiceProperties rpcServiceProperties);
+    void addService(RpcServiceConfig rpcServiceConfig);
 
     /**
      *
-     * @param rpcServiceProperties service related attributes
-     * @return service object
+     * @param rpcServiceName rpc service name
      */
-    Object getService(RpcServiceProperties rpcServiceProperties);
+    Object getService(String rpcServiceName);
+
 
     /**
      *
-     * @param service               service object
-     * @param rpcServiceProperties  service related attributes
+     * @param rpcServiceConfig  rpc service related attributes
      */
-    void publishService(Object service, RpcServiceProperties rpcServiceProperties);
-
-    /**
-     *
-     * @param service  service object
-     */
-    void publishService(Object service);
+    void publishService(RpcServiceConfig rpcServiceConfig);
 }

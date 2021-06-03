@@ -1,6 +1,5 @@
 package com.tinyrpc;
 
-import com.tinyrpc.entity.RpcServiceProperties;
 import com.tinyrpc.remoting.transport.socket.SocketRpcServer;
 import com.tinyrpc.serviceimpl.HelloServiceImpl;
 

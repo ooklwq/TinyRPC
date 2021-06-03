@@ -1,6 +1,10 @@
 package com.tinyrpc.remoting.transport.socket;
 
+import com.tinyrpc.config.RpcServiceConfig;
+import com.tinyrpc.factory.SingletonFactory;
 import com.tinyrpc.provider.ServiceProvider;
+import com.tinyrpc.provider.impl.ZKServiceProviderImpl;
+import com.tinyrpc.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -23,9 +27,12 @@ public class SocketRpcServer {
     private final ServiceProvider serviceProvider;
 
     public SocketRpcServer() {
-        //TODO:线程池和注册中心
-        this.threadPool =
-        //this.serviceProvider =
+        this.threadPool = ThreadPoolFactoryUtils.createCustomThreadPoolIfAbsent("socket-server-rpc-pool");
+        this.serviceProvider = SingletonFactory.getInstance(ZKServiceProviderImpl.class);
+    }
+
+    public void registerService(RpcServiceConfig rpcServiceConfig) {
+        serviceProvider.publishService(rpcServiceConfig);
     }
 
     public void start() {
@@ -36,9 +43,9 @@ public class SocketRpcServer {
             Socket socket;
             while ((socket = server.accept()) != null) {
                 log.info("client connected [{}]", socket.getInetAddress());
-                //TODO：线程池执行
+                threadPool.execute(new SocketRpcRequestHandlerRunnable(socket));
             }
-            //threadPool.shutdown();
+            threadPool.shutdown();
         } catch (IOException e) {
             log.error("occur IOException:", e);
         }
