@@ -6,6 +6,6 @@ package com.tinyrpc.registry.zk;
  * @author wql
  * @date 2021/6/3
  */
-public class ZKServiceDiscoverImpl {
+public class ZkServiceDiscoveryImpl {
 
 }

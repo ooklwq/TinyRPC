@@ -8,9 +8,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
@@ -111,7 +116,30 @@ public class CuratorUtils {
     }
 
     public static CuratorFramework getZkClient() {
+        //check if user has set zk address
         Properties properties = PropertiesFileUtil.readPropertiesFile(RpcConfigEnum.RPC_CONFIG_PATH.getPropertyValue());
-
+        String zookeeperAddress = properties != null && properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) != null ?
+            properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) : DEFAULT_ZOOKEEPER_ADDRESS;
+        // if zkClient has been started, return directly
+        if (zkClient != null &&zkClient.getState() == CuratorFrameworkState.STARTED) {
+            return zkClient;
+        }
+        //Retry strategy. Retry 3times, and will increase the sleep time between retries.
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
+        zkClient = CuratorFrameworkFactory.builder()
+            // the server to connect to (can be a server list)
+            .connectString(zookeeperAddress)
+            .retryPolicy(retryPolicy)
+            .build();
+        zkClient.start();
+        try {
+            //wait 30s until connect to the zookeeper
+            if (zkClient.blockUntilConnected(30, TimeUnit.SECONDS)) {
+                throw new RuntimeException("Time out waiting to connect to ZK!");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return zkClient;
     }
 }
