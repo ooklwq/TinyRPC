@@ -1,5 +1,6 @@
 package com.tinyrpc.registry;
 
+import com.tinyrpc.extension.SPI;
 import java.net.InetSocketAddress;
 
 /**
@@ -8,6 +9,7 @@ import java.net.InetSocketAddress;
  * @author wql
  * @date 2021/6/1
  */
+@SPI
 public interface ServiceRegistry {
 
     /**

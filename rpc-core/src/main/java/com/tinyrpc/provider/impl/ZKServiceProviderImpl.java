@@ -3,8 +3,11 @@ package com.tinyrpc.provider.impl;
 import com.tinyrpc.config.RpcServiceConfig;
 import com.tinyrpc.enums.RpcErrorMessageEnum;
 import com.tinyrpc.exception.RpcException;
+import com.tinyrpc.extension.ExtensionLoader;
 import com.tinyrpc.provider.ServiceProvider;
 import com.tinyrpc.registry.ServiceRegistry;
+import com.tinyrpc.remoting.transport.netty.server.NettyRpcServer;
+import java.net.InetSocketAddress;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
@@ -33,8 +36,7 @@ public class ZKServiceProviderImpl implements ServiceProvider {
     public ZKServiceProviderImpl() {
         serviceMap = new ConcurrentHashMap<>();
         registeredService = ConcurrentHashMap.newKeySet();
-        //TODO:加载注册中心
-//        serviceRegistry =
+        serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("zk");
     }
 
     @Override
@@ -62,7 +64,8 @@ public class ZKServiceProviderImpl implements ServiceProvider {
         try {
             String host = InetAddress.getLocalHost().getHostAddress();
             this.addService(rpcServiceConfig);
-            //TODO:注册到注册中心
+            serviceRegistry.registerService(rpcServiceConfig.getServiceName(), new InetSocketAddress(host,
+                NettyRpcServer.PORT));
         } catch (UnknownHostException e) {
             log.error("occur exception when getHostAddress", e);
         }

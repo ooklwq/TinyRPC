@@ -1,5 +1,6 @@
 package com.tinyrpc;
 
+import com.tinyrpc.config.RpcServiceConfig;
 import com.tinyrpc.remoting.transport.socket.SocketRpcServer;
 import com.tinyrpc.serviceimpl.HelloServiceImpl;
 
@@ -14,9 +15,10 @@ public class SocketServerMain {
     public static void main(String[] args) {
         HelloService helloService = new HelloServiceImpl();
         SocketRpcServer socketRpcServer = new SocketRpcServer();
-        RpcServiceProperties rpcServiceProperties = RpcServiceProperties.builder()
-                .group("test2").version("version2").build();
-        socketRpcServer.
+        RpcServiceConfig rpcServiceConfig = new RpcServiceConfig();
+        rpcServiceConfig.setService(helloService);
+        socketRpcServer.registerService(rpcServiceConfig);
+        socketRpcServer.start();
     }
 
 }

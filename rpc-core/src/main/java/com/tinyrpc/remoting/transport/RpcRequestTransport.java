@@ -3,7 +3,7 @@ package com.tinyrpc.remoting.transport;
 import com.tinyrpc.remoting.dto.RpcRequest;
 
 /**
- * seend RpcRequest
+ * send RpcRequest
  *
  * @author wql
  * @date 2021/5/21

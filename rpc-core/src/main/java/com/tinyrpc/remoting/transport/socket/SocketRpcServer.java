@@ -1,9 +1,11 @@
 package com.tinyrpc.remoting.transport.socket;
 
+import com.tinyrpc.config.CustomShutdownHook;
 import com.tinyrpc.config.RpcServiceConfig;
 import com.tinyrpc.factory.SingletonFactory;
 import com.tinyrpc.provider.ServiceProvider;
 import com.tinyrpc.provider.impl.ZKServiceProviderImpl;
+import com.tinyrpc.remoting.transport.netty.server.NettyRpcServer;
 import com.tinyrpc.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,8 +40,8 @@ public class SocketRpcServer {
     public void start() {
         try (ServerSocket server = new ServerSocket()){
             String host = InetAddress.getLocalHost().getHostAddress();
-            server.bind(new InetSocketAddress(host, 9999));
-            //TODO:ShutdownHook
+            server.bind(new InetSocketAddress(host, NettyRpcServer.PORT));
+            CustomShutdownHook.getCustomShutdownHook().clearAll();
             Socket socket;
             while ((socket = server.accept()) != null) {
                 log.info("client connected [{}]", socket.getInetAddress());
