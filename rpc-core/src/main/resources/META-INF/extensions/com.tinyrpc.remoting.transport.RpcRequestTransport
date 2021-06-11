@@ -1,0 +1,2 @@
+netty=com.tinyrpc.remoting.transport.netty.client.NettyRpcClient
+socket=com.tinyrpc.remoting.transport.socket.SocketRpcClient

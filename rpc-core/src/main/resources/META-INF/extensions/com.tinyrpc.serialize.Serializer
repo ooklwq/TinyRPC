@@ -1,0 +1,2 @@
+kryo=com.tinyrpc.serialize.kryo.KryoSerializer
+protostuff=com.tinyrpc.serialize.protostuff.ProtostuffSerializer

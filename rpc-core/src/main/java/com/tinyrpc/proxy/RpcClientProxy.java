@@ -7,6 +7,7 @@ import com.tinyrpc.exception.RpcException;
 import com.tinyrpc.remoting.dto.RpcRequest;
 import com.tinyrpc.remoting.dto.RpcResponse;
 import com.tinyrpc.remoting.transport.RpcRequestTransport;
+import com.tinyrpc.remoting.transport.netty.client.NettyRpcClient;
 import com.tinyrpc.remoting.transport.netty.server.NettyRpcServer;
 import com.tinyrpc.remoting.transport.socket.SocketRpcClient;
 import com.tinyrpc.remoting.transport.socket.SocketRpcServer;
@@ -14,6 +15,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -81,10 +83,10 @@ public class RpcClientProxy implements InvocationHandler {
             .version(rpcServiceConfig.getVersion())
             .build();
         RpcResponse<Object> rpcResponse = null;
-        //TODO: NettyRpcClient
-//        if (rpcRequestTransport instanceof NettyRpcClient) {
-//
-//        }
+        if (rpcRequestTransport instanceof NettyRpcClient) {
+            CompletableFuture<RpcResponse<Object>> completableFuture = (CompletableFuture<RpcResponse<Object>>) rpcRequestTransport.sendRpcRequest(rpcRequest);
+            rpcResponse = completableFuture.get();
+        }
         if (rpcRequestTransport instanceof SocketRpcClient) {
             rpcResponse = (RpcResponse<Object>) rpcRequestTransport.sendRpcRequest(rpcRequest);
         }
