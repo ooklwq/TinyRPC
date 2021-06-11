@@ -17,7 +17,8 @@ public class NettyServerMain {
         HelloService helloService2 = new HelloServiceImpl2();
 //        RpcServiceConfig rpcServiceConfig = RpcServiceConfig.builder()
 //            .group("test2").version("version2").service(helloService2).build();
-        RpcServiceConfig rpcServiceConfig = RpcServiceConfig.builder().service(helloService2).build();
+        RpcServiceConfig rpcServiceConfig = new RpcServiceConfig();
+        rpcServiceConfig.setService(helloService2);
         NettyRpcServer nettyRpcServer = new NettyRpcServer();
         nettyRpcServer.registerService(rpcServiceConfig);
         nettyRpcServer.start();
