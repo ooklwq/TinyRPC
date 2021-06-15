@@ -2,6 +2,7 @@ package com.tinyrpc.serviceimpl;
 
 import com.tinyrpc.HelloObject;
 import com.tinyrpc.HelloService;
+import com.tinyrpc.annotation.RpcService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2021/5/21
  */
 @Slf4j
+@RpcService(group = "test1", version = "version1")
 public class HelloServiceImpl implements HelloService {
 
     static {

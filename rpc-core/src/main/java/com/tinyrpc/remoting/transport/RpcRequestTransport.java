@@ -1,5 +1,6 @@
 package com.tinyrpc.remoting.transport;
 
+import com.tinyrpc.extension.SPI;
 import com.tinyrpc.remoting.dto.RpcRequest;
 
 /**
@@ -8,6 +9,7 @@ import com.tinyrpc.remoting.dto.RpcRequest;
  * @author wql
  * @date 2021/5/21
  */
+@SPI
 public interface RpcRequestTransport {
 
     /**
